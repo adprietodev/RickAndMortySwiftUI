@@ -24,6 +24,9 @@
 		CCCA7B462C22D75D009161EC /* RemoteEpisodesDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCA7B452C22D75D009161EC /* RemoteEpisodesDatasource.swift */; };
 		CCCA7B492C22D890009161EC /* EpisodesPaginationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCA7B482C22D890009161EC /* EpisodesPaginationDTO.swift */; };
 		CCCA7B4B2C22D8D4009161EC /* EpisodeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCA7B4A2C22D8D4009161EC /* EpisodeDTO.swift */; };
+		CCCA7B4D2C22FDF2009161EC /* CharactersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCA7B4C2C22FDF2009161EC /* CharactersRepository.swift */; };
+		CCCA7B4F2C22FFF1009161EC /* LocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCA7B4E2C22FFF1009161EC /* LocationsRepository.swift */; };
+		CCCA7B512C230154009161EC /* EpisodesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCA7B502C230154009161EC /* EpisodesRepository.swift */; };
 		CCCB85BA2C21A9750045D162 /* RickAndMortyAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB85B92C21A9750045D162 /* RickAndMortyAppApp.swift */; };
 		CCCB85BE2C21A9760045D162 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCCB85BD2C21A9760045D162 /* Assets.xcassets */; };
 		CCCB85C12C21A9760045D162 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCCB85C02C21A9760045D162 /* Preview Assets.xcassets */; };
@@ -53,6 +56,9 @@
 		CCCA7B452C22D75D009161EC /* RemoteEpisodesDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteEpisodesDatasource.swift; sourceTree = "<group>"; };
 		CCCA7B482C22D890009161EC /* EpisodesPaginationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesPaginationDTO.swift; sourceTree = "<group>"; };
 		CCCA7B4A2C22D8D4009161EC /* EpisodeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDTO.swift; sourceTree = "<group>"; };
+		CCCA7B4C2C22FDF2009161EC /* CharactersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersRepository.swift; sourceTree = "<group>"; };
+		CCCA7B4E2C22FFF1009161EC /* LocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsRepository.swift; sourceTree = "<group>"; };
+		CCCA7B502C230154009161EC /* EpisodesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesRepository.swift; sourceTree = "<group>"; };
 		CCCB85B62C21A9750045D162 /* RickAndMortyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMortyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCCB85B92C21A9750045D162 /* RickAndMortyAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickAndMortyAppApp.swift; sourceTree = "<group>"; };
 		CCCB85BD2C21A9760045D162 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,6 +96,9 @@
 		CCCA7B182C22BB9A009161EC /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				CCCA7B4C2C22FDF2009161EC /* CharactersRepository.swift */,
+				CCCA7B4E2C22FFF1009161EC /* LocationsRepository.swift */,
+				CCCA7B502C230154009161EC /* EpisodesRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -399,8 +408,10 @@
 				CCCB85CE2C21AA820045D162 /* TabBarView.swift in Sources */,
 				CCCB85D42C21AB860045D162 /* LocationsList.swift in Sources */,
 				CCCB85D12C21AB110045D162 /* CharacterListView.swift in Sources */,
+				CCCA7B4F2C22FFF1009161EC /* LocationsRepository.swift in Sources */,
 				CCCA7B222C22BC62009161EC /* InfoDTO.swift in Sources */,
 				CCCA7B432C22D733009161EC /* EpisodesDatasourceProtocol.swift in Sources */,
+				CCCA7B512C230154009161EC /* EpisodesRepository.swift in Sources */,
 				CCCA7B1C2C22BBEE009161EC /* CharactersDatasourceProtocol.swift in Sources */,
 				CCCB85BA2C21A9750045D162 /* RickAndMortyAppApp.swift in Sources */,
 				CCCA7B2E2C22C43B009161EC /* Dictionary.swift in Sources */,
@@ -408,6 +419,7 @@
 				CCCA7B282C22BE2D009161EC /* OriginDTO.swift in Sources */,
 				CCCA7B4B2C22D8D4009161EC /* EpisodeDTO.swift in Sources */,
 				CCCA7B352C22C6B1009161EC /* RemoteLocationsDatasource.swift in Sources */,
+				CCCA7B4D2C22FDF2009161EC /* CharactersRepository.swift in Sources */,
 				CCCA7B492C22D890009161EC /* EpisodesPaginationDTO.swift in Sources */,
 				CCCA7B262C22BD46009161EC /* CharactersPaginationDTO.swift in Sources */,
 				CCCA7B312C22C67C009161EC /* LocationsDatasourceProtocol.swift in Sources */,
