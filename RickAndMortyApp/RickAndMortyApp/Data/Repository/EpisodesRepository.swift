@@ -7,20 +7,32 @@
 
 import Foundation
 
-// TODO: - Protocol
-class EpisodesRepository {
+class EpisodesRepository: EpisodesRepositoryProtocol {
     // MARK: - Properties
-    let episodesDatasource: EpisodesDatasourceProtocol
+    let datasource: EpisodesDatasourceProtocol
 
-    init(episodesDatasource: EpisodesDatasourceProtocol) {
-        self.episodesDatasource = episodesDatasource
+    init(datasource: EpisodesDatasourceProtocol) {
+        self.datasource = datasource
     }
 
     // MARK: - Functions
-    // TODO: - Protocol
-    func getEpisodes(with filters: [String: Any]) async throws {
-        let episodesDTO = try await episodesDatasource.getEpisodes(with: filters)
-        // TODO: - toDomain
-        // TODO: - Return Episode
+    func getEpisodes(with filters: [String: Any]) async throws -> [Episode] {
+        let episodesDTO = try await datasource.getEpisodes(with: filters)
+        return episodesDTO.map { $0.toDomain() }
+    }
+}
+
+fileprivate extension EpisodeDTO {
+    func toDomain() -> Episode {
+        Episode(
+            id: self.id,
+            name: self.name,
+            airDate: self.airDate,
+            episode: self.episode,
+            characters: self.characters.compactMap {
+                Int( $0.split(separator: "/").last ?? "0")
+            },
+            created: self.created
+        )
     }
 }

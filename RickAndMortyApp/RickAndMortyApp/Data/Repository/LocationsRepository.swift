@@ -7,20 +7,32 @@
 
 import Foundation
 
-// TODO: - Protocol
-class LocationsRepository {
+class LocationsRepository: LocationsRepositoryProtocol {
     // MARK: - Properties
-    let locationsDatasource: LocationsDatasourceProtocol
+    let datasource: LocationsDatasourceProtocol
 
-    init(locationsDatasource: LocationsDatasourceProtocol) {
-        self.locationsDatasource = locationsDatasource
+    init(datasource: LocationsDatasourceProtocol) {
+        self.datasource = datasource
     }
 
     // MARK: - Functions
-    // TODO: - Entity Location
-    func getLocations(with filters: [String: Any]) async throws {
-        let locationsDTO = try await locationsDatasource.getLocations(with: filters)
-        // TODO: - toDomain
-        // TODO: - Return Locations
+    func getLocations(with filters: [String: Any]) async throws -> [Location] {
+        let locationsDTO = try await datasource.getLocations(with: filters)
+        return locationsDTO.map { $0.toDomain() }
+    }
+}
+
+fileprivate extension LocationDTO {
+    func toDomain() -> Location {
+        Location(
+            id: self.id,
+            name: self.name,
+            type: self.type,
+            dimension: self.dimension,
+            residents: self.residents.compactMap {
+                Int($0.split(separator: "/").last ?? "0") ?? 0
+            },
+            created: self.created
+        )
     }
 }

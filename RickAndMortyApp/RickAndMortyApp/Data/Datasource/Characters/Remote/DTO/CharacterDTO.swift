@@ -14,9 +14,9 @@ struct CharacterDTO: Codable {
     let species: String
     let type: String
     let gender: String
-    let origin: OriginDTO
+    let origin: CharacterLocationDTO
     let location: CharacterLocationDTO
     let image: String
-    let episode: [String]
+    let episodes: [String]
     let created: String
 }
