@@ -8,5 +8,5 @@
 import Foundation
 
 protocol CharactersListViewModelProtocol {
-    
+    var characters: [Character] { get set }
 }

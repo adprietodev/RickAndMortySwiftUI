@@ -40,9 +40,9 @@ fileprivate extension CharacterDTO {
                 name: self.location.name
             ),
             image: self.image,
-            episodes: self.episodes.compactMap {
+            episodes: self.episodes?.compactMap {
                 Int($0.split(separator: "/").last ?? "0")
-            },
+            } ?? [],
             created: self.created
         )
     }

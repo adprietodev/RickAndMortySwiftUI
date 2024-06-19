@@ -9,7 +9,11 @@ import Foundation
 
 class CharactersListBuilder {
     func build() -> CharacterListView<CharactersListViewModel> {
-        let viewModel = CharactersListViewModel()
+        let charactersDatasource = RemoteCharactersDatasource()
+        let charactersRepository = CharactersRepository(datasource: charactersDatasource)
+        let charactersUseCase = CharactersUseCase(repository: charactersRepository)
+        
+        let viewModel = CharactersListViewModel(charactersUseCase: charactersUseCase)
         let view = CharacterListView(viewModel: viewModel)
         return view
     }

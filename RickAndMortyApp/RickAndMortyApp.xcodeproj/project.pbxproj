@@ -43,6 +43,8 @@
 		CCFF32CE2C234A9200F8A026 /* EpisodesRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF32CD2C234A9200F8A026 /* EpisodesRepositoryProtocol.swift */; };
 		CCFF32D32C2350F000F8A026 /* CharactersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF32D22C2350F000F8A026 /* CharactersUseCase.swift */; };
 		CCFF32D52C23510900F8A026 /* CharactersUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF32D42C23510900F8A026 /* CharactersUseCaseProtocol.swift */; };
+		CCFF32D72C23579700F8A026 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF32D62C23579700F8A026 /* String.swift */; };
+		CCFF32DC2C236CE800F8A026 /* ImageURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFF32DB2C236CE800F8A026 /* ImageURLView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +85,8 @@
 		CCFF32CD2C234A9200F8A026 /* EpisodesRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesRepositoryProtocol.swift; sourceTree = "<group>"; };
 		CCFF32D22C2350F000F8A026 /* CharactersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersUseCase.swift; sourceTree = "<group>"; };
 		CCFF32D42C23510900F8A026 /* CharactersUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersUseCaseProtocol.swift; sourceTree = "<group>"; };
+		CCFF32D62C23579700F8A026 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		CCFF32DB2C236CE800F8A026 /* ImageURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				CCCA7B2D2C22C43B009161EC /* Dictionary.swift */,
+				CCFF32D62C23579700F8A026 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 		CCCB85B82C21A9750045D162 /* RickAndMortyApp */ = {
 			isa = PBXGroup;
 			children = (
+				CCFF32D82C236CAA00F8A026 /* Commons */,
 				CCCA7B2B2C22C427009161EC /* Helpers */,
 				CCCB85DC2C21B3620045D162 /* Resources */,
 				CCCB85C82C21A98D0045D162 /* Data */,
@@ -395,6 +401,14 @@
 			path = Episodes;
 			sourceTree = "<group>";
 		};
+		CCFF32D82C236CAA00F8A026 /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				CCFF32DB2C236CE800F8A026 /* ImageURLView.swift */,
+			);
+			path = Commons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -487,6 +501,7 @@
 				CCFF32CE2C234A9200F8A026 /* EpisodesRepositoryProtocol.swift in Sources */,
 				CCFF32D32C2350F000F8A026 /* CharactersUseCase.swift in Sources */,
 				CCCA7B432C22D733009161EC /* EpisodesDatasourceProtocol.swift in Sources */,
+				CCFF32DC2C236CE800F8A026 /* ImageURLView.swift in Sources */,
 				CCCA7B512C230154009161EC /* EpisodesRepository.swift in Sources */,
 				CCCA7B1C2C22BBEE009161EC /* CharactersDatasourceProtocol.swift in Sources */,
 				CCCB85BA2C21A9750045D162 /* RickAndMortyAppApp.swift in Sources */,
@@ -497,6 +512,7 @@
 				CCFF32C42C233D7A00F8A026 /* Character.swift in Sources */,
 				CCCA7B4D2C22FDF2009161EC /* CharactersRepository.swift in Sources */,
 				CCCA7B492C22D890009161EC /* EpisodesPaginationDTO.swift in Sources */,
+				CCFF32D72C23579700F8A026 /* String.swift in Sources */,
 				CCCA7B262C22BD46009161EC /* CharactersPaginationDTO.swift in Sources */,
 				CCCA7B312C22C67C009161EC /* LocationsDatasourceProtocol.swift in Sources */,
 			);

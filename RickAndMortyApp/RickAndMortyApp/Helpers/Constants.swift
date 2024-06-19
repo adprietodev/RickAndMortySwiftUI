@@ -33,6 +33,11 @@ struct Constants {
         case unknown = "unknown"
     }
 
+    enum DateFormat: String {
+        case createdRickAndMortyAPI = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        case shortMonthDayYear = "MMM d, yyyy"
+    }
+
     enum APIError: Error {
         case invalidURL
         case requestFailed

@@ -15,6 +15,7 @@ class CharactersUseCase: CharactersUseCaseProtocol {
         self.repository = repository
     }
 
+    // MARK: - Functions
     func getCharacters(with filters: [String: Any]) async throws -> [Character] {
         try await repository.getCharacters(with: filters)
     }

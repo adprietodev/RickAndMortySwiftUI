@@ -11,30 +11,33 @@ struct CharacterListView<VM>: View where VM: CharactersListViewModelProtocol {
     @State var viewModel: VM
     @State var searchNameTextField = ""
     @State var isHiddenXmarkCircle = true
-
+    
     var body: some View {
-        List {
-            Section() {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                    TextField("Search...", text: $searchNameTextField)
-                    Image(systemName: "xmark.circle")
-                        .opacity(isHiddenXmarkCircle ? 0 : 1)
-                }
-            }
-            Section("Characters") {
-                ForEach(0..<10){ _ in
+        NavigationStack {
+            List {
+                Section() {
                     HStack {
-                        Image(systemName: "person.fill")
+                        Image(systemName: "magnifyingglass")
+                        TextField("Search...", text: $searchNameTextField)
+                        Image(systemName: "xmark.circle")
+                            .opacity(isHiddenXmarkCircle ? 0 : 1)
+                    }
+                }
+                
+                ForEach(viewModel.characters){ character in
+                    HStack {
+                        ImageURLView(imageURLString: character.image)
                         VStack(alignment: .leading) {
-                            Text("Name")
-                            Text("Location")
+                            Text("\(character.name)")
+                            Text("\(character.status.rawValue)")
                         }
+                        .padding(.leading, 12)
                     }
                 }
             }
+            .listRowSpacing(16)
+            .scrollIndicators(.hidden)
         }
-        
     }
 }
 

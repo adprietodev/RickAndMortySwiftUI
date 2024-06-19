@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Character {
+class Character: Identifiable {
     let id: Int
     let name: String
     let status: Constants.Status

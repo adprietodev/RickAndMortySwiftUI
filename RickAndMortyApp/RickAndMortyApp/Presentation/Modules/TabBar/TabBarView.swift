@@ -21,15 +21,19 @@ struct TabBarView: View {
                     Image(systemName: "person.fill")
                 }
                 .tag(0)
-                LocationsList()
-                    .tabItem { Label("Locations", systemImage: "mappin.and.ellipse") }
-                    .tag(1)
+                NavigationStack {
+                    LocationsList()
+                }
+                .tabItem {
+                    Text("Locations")
+                    Image(systemName: "mappin.and.ellipse")
+                }
+                .tag(1)
             }
             .tint(.cyan)
-            .onAppear(perform: {
-                UITabBar.appearance().backgroundColor = .primaryBlack
-            })
         }
+        .preferredColorScheme(.dark)
+        
     }
 }
 
