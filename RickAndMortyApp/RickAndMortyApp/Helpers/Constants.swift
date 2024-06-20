@@ -20,6 +20,15 @@ struct Constants {
         }
     }
 
+    enum QueryParams: String {
+        case page = "page"
+        case name = "name"
+        case status = "status"
+        case species = "spicies"
+        case type = "type"
+        case gender = "gender"
+    }
+
     enum Status: String {
         case alive = "Alive"
         case dead = "Dead"

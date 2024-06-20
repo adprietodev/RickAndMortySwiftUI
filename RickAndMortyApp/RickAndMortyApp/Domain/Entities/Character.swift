@@ -5,7 +5,7 @@
 //  Created by Adrian Prieto Villena on 19/6/24.
 //
 
-import Foundation
+import SwiftUI
 
 class Character: Identifiable {
     let id: Int
@@ -19,7 +19,7 @@ class Character: Identifiable {
     let image: String
     let episodes: [Int]
     let created: String
-    var isFavorite: Bool
+    var isFavorite: Bool = false
 
     init(id: Int, name: String, status: Constants.Status, species: String, type: String, gender: Constants.Gender, origin: Location, location: Location, image: String, episodes: [Int], created: String) {
         self.id = id
@@ -33,6 +33,5 @@ class Character: Identifiable {
         self.image = image
         self.episodes = episodes
         self.created = created
-        self.isFavorite = false
     }
 }

@@ -23,7 +23,7 @@ struct ImageURLView: View {
                             .frame(width: 64, height: 64)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     case .failure:
-                        Image("characterPlasceholder")
+                        Image("characterPlaceholder")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.red)
