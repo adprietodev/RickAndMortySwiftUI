@@ -6,17 +6,17 @@
 //
 
 import SwiftUI
+import Combine
 
-@Observable
-class CharactersListViewModel: CharactersListViewModelProtocol {
+class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol {
     let charactersUseCase: CharactersUseCaseProtocol
-    var mainFilters = [String: Any]()
-    var characters = [Character]()
-    var filteredCharacters = [Character]()
-    var isLoading: Bool = false
+    @Published var mainFilters = [String: Any]()
+    @Published var characters = [Character]()
+    @Published var filteredCharacters = [Character]()
+    @Published var isLoading: Bool = false
     private var currentPage: Int = 1
     private var filteredPage: Int = 1
-    var isFiltering: Bool = false
+    @Published var isFiltering: Bool = false
     
     init(charactersUseCase: CharactersUseCaseProtocol) {
         self.charactersUseCase = charactersUseCase
@@ -52,11 +52,6 @@ class CharactersListViewModel: CharactersListViewModelProtocol {
 
     func searchByName(_ name: String) {
         filteredPage = 1
-    }
-
-    func setFavorite(at index: Int) {
-        characters[index].isFavorite.toggle()
-        print(characters[index].isFavorite)
     }
 
     func loadNewPage() {

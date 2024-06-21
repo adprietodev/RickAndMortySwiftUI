@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CharacterListView<VM>: View where VM: CharactersListViewModelProtocol {
-    @State var viewModel: VM
+struct CharacterListView<VM: CharactersListViewModelProtocol & ObservableObject>: View  {
+    @ObservedObject var viewModel: VM
     @State var searchNameTextField = ""
     @State private var isSearchBarVisible = true
     @State private var searchTimer: Timer?
@@ -73,11 +73,12 @@ struct CharacterListView<VM>: View where VM: CharactersListViewModelProtocol {
                         }
                         Spacer()
                         Button {
-                            viewModel.setFavorite(at: index)
+                            character.isFavorite.toggle()
+                            print(character.isFavorite)
                         } label: {
-                            Image(systemName: viewModel.characters[index].isFavorite ? "heart.fill" : "heart")
+                            Image(systemName: character.isFavorite ? "heart.fill" : "heart")
                                 .font(.title)
-                                .foregroundColor(viewModel.characters[index].isFavorite ? .red : .gray)
+                                .foregroundColor(character.isFavorite ? .red : .gray)
                         }
                         .frame(width: 50)
                     }

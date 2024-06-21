@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Character: Identifiable {
+class Character: Identifiable, ObservableObject {
     let id: Int
     let name: String
     let status: Constants.Status
@@ -19,7 +19,7 @@ class Character: Identifiable {
     let image: String
     let episodes: [Int]
     let created: String
-    var isFavorite: Bool = false
+    @Published var isFavorite: Bool = false
 
     init(id: Int, name: String, status: Constants.Status, species: String, type: String, gender: Constants.Gender, origin: Location, location: Location, image: String, episodes: [Int], created: String) {
         self.id = id
