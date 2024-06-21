@@ -5,11 +5,11 @@
 //  Created by Adrian Prieto Villena on 18/6/24.
 //
 
-import Foundation
+import SwiftUI
 
 class CharactersListBuilder {
     func build() -> CharacterListView<CharactersListViewModel> {
-        let charactersDatasource = RemoteCharactersDatasource()
+        let charactersDatasource = ApiRickAndMoryCharactersDatasource()
         let charactersRepository = CharactersRepository(datasource: charactersDatasource)
         let charactersUseCase = CharactersUseCase(repository: charactersRepository)
         

@@ -10,13 +10,15 @@ import Combine
 
 class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol {
     let charactersUseCase: CharactersUseCaseProtocol
+
     @Published var mainFilters = [String: Any]()
     @Published var characters = [Character]()
     @Published var filteredCharacters = [Character]()
     @Published var isLoading: Bool = false
+    @Published var hasAdditionalFilters: Bool = false
+
     private var currentPage: Int = 1
     private var filteredPage: Int = 1
-    @Published var isFiltering: Bool = false
     
     init(charactersUseCase: CharactersUseCaseProtocol) {
         self.charactersUseCase = charactersUseCase
@@ -50,12 +52,29 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
         }
     }
 
+    func checkAdditionalFilters() {
+        hasAdditionalFilters = mainFilters.containsAdditionalFilter(keys: [
+            Constants.QueryParams.gender.rawValue,
+            Constants.QueryParams.species.rawValue,
+            Constants.QueryParams.status.rawValue,
+            Constants.QueryParams.type.rawValue,
+        ])
+        print(hasAdditionalFilters)
+    }
+
     func searchByName(_ name: String) {
         filteredPage = 1
+        if name.isEmpty {
+            mainFilters[Constants.QueryParams.page.rawValue] = currentPage
+            mainFilters.removeValue(forKey: Constants.QueryParams.name.rawValue)
+        } else {
+            mainFilters.updateValue(name, forKey: Constants.QueryParams.name.rawValue)
+            setFilteredCharacters()
+        }
     }
 
     func loadNewPage() {
-        if !isFiltering {
+        if mainFilters.count > 1 {
             currentPage += 1
             mainFilters[Constants.QueryParams.page.rawValue] = "\(currentPage)"
             setCharacters()

@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-struct CharacterListView<VM: CharactersListViewModelProtocol & ObservableObject>: View  {
-    @ObservedObject var viewModel: VM
+struct CharacterListView<VM: CharactersListViewModelProtocol>: View  {
+    @StateObject var viewModel: VM
+
     @State var searchNameTextField = ""
     @State private var isSearchBarVisible = true
     @State private var searchTimer: Timer?
+    @State private var isSearching:  Bool = false
     
     var body: some View {
         NavigationStack {
@@ -24,8 +26,8 @@ struct CharacterListView<VM: CharactersListViewModelProtocol & ObservableObject>
                             .onChange(of: searchNameTextField) {
                                 self.searchTimer?.invalidate()
                                 let newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-                                    // TODO: - Function search
-                                    print("Escrito \(searchNameTextField)")
+                                    viewModel.searchByName(searchNameTextField)
+                                    isSearching = !searchNameTextField.isEmpty
                                 }
                                 self.searchTimer = newTimer
                             }
@@ -39,49 +41,28 @@ struct CharacterListView<VM: CharactersListViewModelProtocol & ObservableObject>
                         }
                         Button {
                             // TODO: - Go to filter screen
+                            viewModel.checkAdditionalFilters()
                         } label: {
-                            Image(searchNameTextField.isEmpty ? "filterBlank" : "filterFill")
+                            Image(viewModel.hasAdditionalFilters ? "filterFill" : "filterBlank")
                                 .foregroundStyle(.primaryGreen)
                         }
                     }
                     
-                    if viewModel.isFiltering {
+                    if viewModel.hasAdditionalFilters {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(viewModel.mainFilters.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
-                                    // TODO: - Filters
+                                    if key != Constants.QueryParams.page.rawValue && key != Constants.QueryParams.name.rawValue {
+                                        Text("\(String(describing: viewModel.mainFilters[key]!))")
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                
-                ForEach(searchNameTextField.isEmpty ? Array(viewModel.characters.enumerated()) : Array(viewModel.filteredCharacters.enumerated()), id: \.element.id) { index,character in
-                    HStack{
-                        ImageURLView(imageURLString: character.image)
-                        VStack(alignment: .leading) {
-                            Text("\(character.name)")
-                                .font(.title2)
-                            HStack{
-                                Text("\(character.status.rawValue)")
-                                    .foregroundStyle(
-                                        character.status == .alive ? .primaryGreen : character.status == .dead ? .deadRed : .white
-                                    )
-                                Text("\(character.species)")
-                            }
-                            Text("\(character.gender.rawValue)")
-                        }
-                        Spacer()
-                        Button {
-                            character.isFavorite.toggle()
-                            print(character.isFavorite)
-                        } label: {
-                            Image(systemName: character.isFavorite ? "heart.fill" : "heart")
-                                .font(.title)
-                                .foregroundColor(character.isFavorite ? .red : .gray)
-                        }
-                        .frame(width: 50)
-                    }
+                ForEach(!isSearching ? viewModel.characters : viewModel.filteredCharacters) { character in
+                    
+                    CharacterView(character: character)
                     .onAppear {
                         if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
                             viewModel.loadNewPage()
