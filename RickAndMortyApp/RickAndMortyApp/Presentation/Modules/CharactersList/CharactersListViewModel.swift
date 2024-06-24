@@ -43,8 +43,10 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
             do {
                 if filteredPage == 1 {
                     filteredCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                    isLoading = false
                 } else {
                     filteredCharacters += try await charactersUseCase.getCharacters(with: mainFilters)
+                    isLoading = false
                 }
             } catch {
                 
@@ -59,7 +61,6 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
             Constants.QueryParams.status.rawValue,
             Constants.QueryParams.type.rawValue,
         ])
-        print(hasAdditionalFilters)
     }
 
     func searchByName(_ name: String) {
@@ -73,16 +74,32 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
         }
     }
 
+    func updateFavourite(character: Character) {
+        do {
+            try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
+        } catch {
+            print(error)
+        }
+    }
+
     func loadNewPage() {
         if mainFilters.count > 1 {
-            currentPage += 1
-            mainFilters[Constants.QueryParams.page.rawValue] = "\(currentPage)"
-            setCharacters()
-        } else {
             filteredPage += 1
             mainFilters[Constants.QueryParams.page.rawValue] = "\(filteredPage)"
             setFilteredCharacters()
+        } else {
+            currentPage += 1
+            mainFilters[Constants.QueryParams.page.rawValue] = "\(currentPage)"
+            setCharacters()
         }
         isLoading = true
+    }
+
+    func updateFilters(newFilters: [String: Any]) {
+        mainFilters.merge(newFilters) {(current, _) in current}
+        checkAdditionalFilters()
+        if hasAdditionalFilters {
+            setFilteredCharacters()
+        }
     }
 }

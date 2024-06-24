@@ -7,13 +7,14 @@
 
 import SwiftUI
 
-struct CharacterListView<VM: CharactersListViewModelProtocol>: View  {
+struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersViewDelegate  {
     @StateObject var viewModel: VM
 
     @State var searchNameTextField = ""
     @State private var isSearchBarVisible = true
     @State private var searchTimer: Timer?
-    @State private var isSearching:  Bool = false
+    @State private var isFiltering:  Bool = false
+    @State private var isFilterViewPresented = false
     
     var body: some View {
         NavigationStack {
@@ -27,7 +28,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View  {
                                 self.searchTimer?.invalidate()
                                 let newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
                                     viewModel.searchByName(searchNameTextField)
-                                    isSearching = !searchNameTextField.isEmpty
+                                    isFiltering = !searchNameTextField.isEmpty
                                 }
                                 self.searchTimer = newTimer
                             }
@@ -40,14 +41,18 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View  {
                                 .padding(.horizontal, 6)
                         }
                         Button {
-                            // TODO: - Go to filter screen
-                            viewModel.checkAdditionalFilters()
+                            isFilterViewPresented = true
                         } label: {
                             Image(viewModel.hasAdditionalFilters ? "filterFill" : "filterBlank")
-                                .foregroundStyle(.primaryGreen)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(.primaryGreen)
                         }
+                        .navigationDestination(isPresented: $isFilterViewPresented) {
+                            FiltersBuilder().build(characterView: self)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    
                     if viewModel.hasAdditionalFilters {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
@@ -60,9 +65,9 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View  {
                         }
                     }
                 }
-                ForEach(!isSearching ? viewModel.characters : viewModel.filteredCharacters) { character in
+                ForEach(!isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
                     
-                    CharacterView(character: character)
+                    CharacterView(character: character, viewModel: viewModel)
                     .onAppear {
                         if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
                             viewModel.loadNewPage()
@@ -77,11 +82,17 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View  {
             .onAppear {
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.primaryGreen]
             }
+            
             if viewModel.isLoading {
                 ProgressView()
                 
             }
         }
+    }
+
+    func setMainFilters(mainFilters: [String:Any]) {
+        isFiltering = !mainFilters.isEmpty
+        viewModel.updateFilters(newFilters: mainFilters)
     }
 }
 

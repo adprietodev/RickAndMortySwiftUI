@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LocalRickAndMortyCharactersDatasource {
+class LocalRickAndMortyCharactersDatasource: LocalCharactersDatasourceProtocol {
     func getFavouriteCharactersIDs() throws -> [Int] {
         if let data = UserDefaults.standard.data(forKey: "favouriteCharactersIDs") {
             let decoder = JSONDecoder()

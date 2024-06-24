@@ -16,4 +16,10 @@ protocol CharactersListViewModelProtocol: ObservableObject {
     func checkAdditionalFilters()
     func loadNewPage()
     func searchByName(_ name: String)
+    func updateFavourite(character: Character)
+    func updateFilters(newFilters: [String: Any])
+}
+
+protocol CharactersViewDelegate {
+    func setMainFilters(mainFilters: [String:Any])
 }

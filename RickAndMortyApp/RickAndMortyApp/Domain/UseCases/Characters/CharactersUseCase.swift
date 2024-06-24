@@ -17,7 +17,7 @@ class CharactersUseCase: CharactersUseCaseProtocol {
 
     // MARK: - Functions
     func getCharacters(with filters: [String: Any]) async throws -> [Character] {
-        var characters = try await repository.getCharacters(with: filters)
+        let characters = try await repository.getCharacters(with: filters)
         let favouritesIDs = try repository.getFavouriteCharactersIDs()
         characters.forEach {
             if favouritesIDs.contains($0.id) {

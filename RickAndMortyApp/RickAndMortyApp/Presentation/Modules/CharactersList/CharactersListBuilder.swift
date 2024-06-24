@@ -9,8 +9,9 @@ import SwiftUI
 
 class CharactersListBuilder {
     func build() -> CharacterListView<CharactersListViewModel> {
-        let charactersDatasource = ApiRickAndMoryCharactersDatasource()
-        let charactersRepository = CharactersRepository(datasource: charactersDatasource)
+        let remoteCharactersDatasource = ApiRickAndMoryCharactersDatasource()
+        let localCharactersDatasource = LocalRickAndMortyCharactersDatasource()
+        let charactersRepository = CharactersRepository(remoteDatasource: remoteCharactersDatasource, localDatasource: localCharactersDatasource)
         let charactersUseCase = CharactersUseCase(repository: charactersRepository)
         
         let viewModel = CharactersListViewModel(charactersUseCase: charactersUseCase)

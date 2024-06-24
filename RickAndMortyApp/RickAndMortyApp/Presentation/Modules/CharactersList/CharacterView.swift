@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct CharacterView: View {
+struct CharacterView<VM: CharactersListViewModelProtocol>: View {
     @ObservedObject var character: Character
+    var viewModel: VM
 
     var body: some View {
         HStack{
@@ -28,12 +29,19 @@ struct CharacterView: View {
             Spacer()
             Button {
                 character.isFavorite.toggle()
+                viewModel.updateFavourite(character: character)
             } label: {
                 Image(systemName: character.isFavorite ? "heart.fill" : "heart")
                     .font(.title)
                     .foregroundColor(character.isFavorite ? .red : .gray)
             }
+            .buttonStyle(PlainButtonStyle())
             .frame(width: 50)
         }
+        .id(character.id)
     }
+}
+
+#Preview {
+    TabBarView()
 }
