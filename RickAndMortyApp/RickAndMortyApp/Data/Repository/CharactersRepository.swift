@@ -9,16 +9,25 @@ import Foundation
 
 class CharactersRepository: CharactersRepositoryProtocol {
     // MARK: - Properties
-    let datasource: CharactersDatasourceProtocol
+    let remoteDatasource: RemoteCharactersDatasourceProtocol
+    let localDatasource: LocalCharactersDatasourceProtocol
 
-    init(datasource: CharactersDatasourceProtocol) {
-        self.datasource = datasource
+    init(remoteDatasource: RemoteCharactersDatasourceProtocol, localDatasource: LocalCharactersDatasourceProtocol) {
+        self.remoteDatasource = remoteDatasource
+        self.localDatasource = localDatasource
     }
 
     // MARK: - Functions
     func getCharacters(with filters: [String: Any]) async throws -> [Character] {
-        let charactersDTO = try await datasource.getCharacters(with: filters)
+        let charactersDTO = try await remoteDatasource.getCharacters(with: filters)
         return charactersDTO.map { $0.toDomain() }
+    }
+
+    func getFavouriteCharactersIDs() throws -> [Int] {
+        try localDatasource.getFavouriteCharactersIDs()
+    }
+    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
+        try localDatasource.setFavoriteCharacter(by: id, isFavourite: isFavourite)
     }
 }
 
@@ -40,9 +49,9 @@ fileprivate extension CharacterDTO {
                 name: self.location.name
             ),
             image: self.image,
-            episodes: self.episodes.compactMap {
+            episodes: self.episodes?.compactMap {
                 Int($0.split(separator: "/").last ?? "0")
-            },
+            } ?? [],
             created: self.created
         )
     }

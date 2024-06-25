@@ -11,4 +11,8 @@ extension Dictionary where Key == String, Value == Any {
     func toQueryString() -> String {
         self.map { "\($0.key)=\($0.value)"}.joined(separator: "&")
     }
+
+    func containsAdditionalFilter(keys: [String]) -> Bool {
+        return keys.contains(where: { self.keys.contains($0) })
+    }
 }

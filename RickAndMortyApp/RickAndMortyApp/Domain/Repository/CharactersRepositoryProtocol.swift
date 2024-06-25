@@ -9,4 +9,6 @@ import Foundation
 
 protocol CharactersRepositoryProtocol {
     func getCharacters(with filters: [String: Any]) async throws -> [Character]
+    func getFavouriteCharactersIDs() throws -> [Int]
+    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws
 }
