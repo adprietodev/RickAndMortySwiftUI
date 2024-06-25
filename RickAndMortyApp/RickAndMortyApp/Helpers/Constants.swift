@@ -29,17 +29,23 @@ struct Constants {
         case gender = "gender"
     }
 
-    enum Status: String {
+    enum Status: String, CaseIterable, Identifiable {
         case alive = "Alive"
         case dead = "Dead"
         case unknown = "unknown"
+        case none
+
+        var id: String { self.rawValue }
     }
 
-    enum Gender: String {
+    enum Gender: String, CaseIterable, Identifiable {
         case female = "Female"
         case male = "Male"
         case genderless = "Genderless"
         case unknown = "unknown"
+        case none
+
+        var id: String { self.rawValue }
     }
 
     enum DateFormat: String {

@@ -50,6 +50,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                         }
                         .navigationDestination(isPresented: $isFilterViewPresented) {
                             FiltersBuilder().build(characterView: self)
+                                .toolbar(.hidden,for: .tabBar)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }

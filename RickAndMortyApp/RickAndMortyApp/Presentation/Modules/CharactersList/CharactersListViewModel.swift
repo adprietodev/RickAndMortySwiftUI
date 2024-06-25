@@ -29,11 +29,14 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     func setCharacters() {
         Task {
             do {
-                characters += try await charactersUseCase.getCharacters(with: mainFilters)
-                isLoading = false
+                let newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.characters += newCharacters
+                    self.isLoading = false
+                }
             } catch {
-                isLoading = false
-                print(error)
+                self.isLoading = false
             }
         }
     }
@@ -41,15 +44,24 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     func setFilteredCharacters() {
         Task {
             do {
+                var newCharacters = [Character]()
                 if filteredPage == 1 {
-                    filteredCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
-                    isLoading = false
+                    newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        filteredCharacters = newCharacters
+                        isLoading = false
+                    }
                 } else {
-                    filteredCharacters += try await charactersUseCase.getCharacters(with: mainFilters)
-                    isLoading = false
+                    newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        filteredCharacters += newCharacters
+                        isLoading = false
+                    }
                 }
             } catch {
-                
+                isLoading = false
             }
         }
     }
