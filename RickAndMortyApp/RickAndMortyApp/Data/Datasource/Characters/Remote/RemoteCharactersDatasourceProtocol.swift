@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol CharactersDatasourceProtocol {
+protocol RemoteCharactersDatasourceProtocol {
     func getCharacters(with filters: [String: Any]) async throws -> [CharacterDTO]
 }

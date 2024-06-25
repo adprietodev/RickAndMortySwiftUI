@@ -7,7 +7,7 @@
 
 import Foundation
 
-class RemoteCharactersDatasource: CharactersDatasourceProtocol {
+class ApiRickAndMoryCharactersDatasource: RemoteCharactersDatasourceProtocol {
     // MARK: - Properties
     let charactersURL = Constants.URLs.charactersEndpoint.fullURL
 
