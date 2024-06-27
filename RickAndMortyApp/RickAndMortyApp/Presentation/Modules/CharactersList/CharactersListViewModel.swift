@@ -108,8 +108,18 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     }
 
     func updateFilters(newFilters: [String: Any]) {
-        mainFilters.merge(newFilters) {(current, _) in current}
+        let specialQuery: [Constants.QueryParams] = [.gender,.species,.status,.type]
+        
+        mainFilters.merge(newFilters) { (_,new) in new }
+        
+        specialQuery.forEach {
+            if !newFilters.keys.contains($0.rawValue) {
+                mainFilters.removeValue(forKey: $0.rawValue)
+            }
+        }
+
         checkAdditionalFilters()
+
         if hasAdditionalFilters {
             setFilteredCharacters()
         }

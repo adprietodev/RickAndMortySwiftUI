@@ -49,7 +49,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                                 .foregroundColor(.primaryGreen)
                         }
                         .navigationDestination(isPresented: $isFilterViewPresented) {
-                            FiltersBuilder().build(characterView: self)
+                            FiltersBuilder().build(characterView: self, mainFilters: viewModel.mainFilters)
                                 .toolbar(.hidden,for: .tabBar)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -96,7 +96,13 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
     }
 
     func setMainFilters(mainFilters: [String:Any]) {
-        isFiltering = !mainFilters.isEmpty
+        isFiltering =  mainFilters.containsAdditionalFilter(keys: [
+            Constants.QueryParams.gender.rawValue,
+            Constants.QueryParams.species.rawValue,
+            Constants.QueryParams.status.rawValue,
+            Constants.QueryParams.type.rawValue,
+        ])
+        print("El filtrado es \(isFiltering)")
         viewModel.updateFilters(newFilters: mainFilters)
     }
 }

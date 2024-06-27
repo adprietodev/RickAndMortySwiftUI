@@ -76,6 +76,11 @@ struct FiltersView<VM: FiltersViewModelProtocol>: View {
             .disabled(viewModel.countCharacterFilter == 0)
         }
         .preferredColorScheme(.dark)
+        .onDisappear {
+            if viewModel.countCharacterFilter == 0 {
+                delegate?.setMainFilters(mainFilters: viewModel.mainFilters)
+            }
+        }
     }
 
     func saveFilters() {

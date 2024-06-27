@@ -20,13 +20,15 @@ struct Constants {
         }
     }
 
-    enum QueryParams: String {
+    enum QueryParams: String, CaseIterable, Identifiable {
         case page = "page"
         case name = "name"
         case status = "status"
         case species = "species"
         case type = "type"
         case gender = "gender"
+
+        var id: String { self.rawValue }
     }
 
     enum Status: String, CaseIterable, Identifiable {
