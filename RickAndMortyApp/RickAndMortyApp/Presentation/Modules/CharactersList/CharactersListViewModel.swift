@@ -29,11 +29,14 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     func setCharacters() {
         Task {
             do {
-                characters += try await charactersUseCase.getCharacters(with: mainFilters)
-                isLoading = false
+                let newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.characters += newCharacters
+                    self.isLoading = false
+                }
             } catch {
-                isLoading = false
-                print(error)
+                self.isLoading = false
             }
         }
     }
@@ -41,15 +44,24 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     func setFilteredCharacters() {
         Task {
             do {
+                var newCharacters = [Character]()
                 if filteredPage == 1 {
-                    filteredCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
-                    isLoading = false
+                    newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        filteredCharacters = newCharacters
+                        isLoading = false
+                    }
                 } else {
-                    filteredCharacters += try await charactersUseCase.getCharacters(with: mainFilters)
-                    isLoading = false
+                    newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        filteredCharacters += newCharacters
+                        isLoading = false
+                    }
                 }
             } catch {
-                
+                isLoading = false
             }
         }
     }
@@ -61,6 +73,10 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
             Constants.QueryParams.status.rawValue,
             Constants.QueryParams.type.rawValue,
         ])
+
+        if hasAdditionalFilters {
+            setFilteredCharacters()
+        }
     }
 
     func searchByName(_ name: String) {
@@ -96,10 +112,24 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     }
 
     func updateFilters(newFilters: [String: Any]) {
-        mainFilters.merge(newFilters) {(current, _) in current}
-        checkAdditionalFilters()
-        if hasAdditionalFilters {
-            setFilteredCharacters()
+        let specialQuery: [Constants.QueryParams] = [.gender,.species,.status,.type]
+        
+        mainFilters.merge(newFilters) { (_,new) in new }
+        
+        specialQuery.forEach {
+            if !newFilters.keys.contains($0.rawValue) {
+                mainFilters.removeValue(forKey: $0.rawValue)
+            }
         }
+
+        checkAdditionalFilters()
     }
+}
+
+extension CharactersListViewModel: FilterCellDellegate {
+    func removeFilter(with key: String) {
+        mainFilters.removeValue(forKey: key)
+        checkAdditionalFilters()
+    }
+    
 }

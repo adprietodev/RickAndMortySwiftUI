@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ImageURLView: View {
-    let imageURLString: String
+    let character: Character
 
     var body: some View {
-        AsyncImage(url: URL(string: imageURLString)) { phase in
+        AsyncImage(url: URL(string: character.image)) { phase in
                     switch phase {
                     case .empty:
                         ProgressView()
@@ -33,8 +33,4 @@ struct ImageURLView: View {
                     }
                 }
     }
-}
-
-#Preview {
-    ImageURLView(imageURLString: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
 }

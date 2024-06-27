@@ -9,4 +9,5 @@ import Foundation
 
 protocol RemoteCharactersDatasourceProtocol {
     func getCharacters(with filters: [String: Any]) async throws -> [CharacterDTO]
+    func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int
 }

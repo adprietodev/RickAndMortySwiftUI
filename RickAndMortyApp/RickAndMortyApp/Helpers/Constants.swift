@@ -20,26 +20,34 @@ struct Constants {
         }
     }
 
-    enum QueryParams: String {
+    enum QueryParams: String, CaseIterable, Identifiable {
         case page = "page"
         case name = "name"
         case status = "status"
-        case species = "spicies"
+        case species = "species"
         case type = "type"
         case gender = "gender"
+
+        var id: String { self.rawValue }
     }
 
-    enum Status: String {
+    enum Status: String, CaseIterable, Identifiable {
         case alive = "Alive"
         case dead = "Dead"
         case unknown = "unknown"
+        case none = "none"
+
+        var id: String { self.rawValue }
     }
 
-    enum Gender: String {
+    enum Gender: String, CaseIterable, Identifiable {
         case female = "Female"
         case male = "Male"
         case genderless = "Genderless"
         case unknown = "unknown"
+        case none = "none"
+
+        var id: String { self.rawValue }
     }
 
     enum DateFormat: String {

@@ -23,3 +23,7 @@ protocol CharactersListViewModelProtocol: ObservableObject {
 protocol CharactersViewDelegate {
     func setMainFilters(mainFilters: [String:Any])
 }
+
+protocol FilterCellDellegate {
+    func removeFilter(with key: String)
+}

@@ -49,7 +49,8 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                                 .foregroundColor(.primaryGreen)
                         }
                         .navigationDestination(isPresented: $isFilterViewPresented) {
-                            FiltersBuilder().build(characterView: self)
+                            FiltersBuilder().build(characterView: self, mainFilters: viewModel.mainFilters)
+                                .toolbar(.hidden,for: .tabBar)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -58,13 +59,17 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                             HStack {
                                 ForEach(viewModel.mainFilters.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
                                     if key != Constants.QueryParams.page.rawValue && key != Constants.QueryParams.name.rawValue {
-                                        Text("\(String(describing: viewModel.mainFilters[key]!))")
+                                        FilterCellView(key: key, param: value, delegate: viewModel as? FilterCellDellegate )
                                     }
                                 }
                             }
                         }
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                     }
                 }
+                
+
                 ForEach(!isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
                     
                     CharacterView(character: character, viewModel: viewModel)
@@ -91,7 +96,12 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
     }
 
     func setMainFilters(mainFilters: [String:Any]) {
-        isFiltering = !mainFilters.isEmpty
+        isFiltering =  mainFilters.containsAdditionalFilter(keys: [
+            Constants.QueryParams.gender.rawValue,
+            Constants.QueryParams.species.rawValue,
+            Constants.QueryParams.status.rawValue,
+            Constants.QueryParams.type.rawValue,
+        ])
         viewModel.updateFilters(newFilters: mainFilters)
     }
 }
