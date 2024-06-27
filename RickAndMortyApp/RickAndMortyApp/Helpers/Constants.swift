@@ -24,7 +24,7 @@ struct Constants {
         case page = "page"
         case name = "name"
         case status = "status"
-        case species = "spicies"
+        case species = "species"
         case type = "type"
         case gender = "gender"
     }
@@ -33,7 +33,7 @@ struct Constants {
         case alive = "Alive"
         case dead = "Dead"
         case unknown = "unknown"
-        case none
+        case none = "none"
 
         var id: String { self.rawValue }
     }
@@ -43,7 +43,7 @@ struct Constants {
         case male = "Male"
         case genderless = "Genderless"
         case unknown = "unknown"
-        case none
+        case none = "none"
 
         var id: String { self.rawValue }
     }

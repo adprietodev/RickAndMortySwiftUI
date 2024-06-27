@@ -59,13 +59,17 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                             HStack {
                                 ForEach(viewModel.mainFilters.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
                                     if key != Constants.QueryParams.page.rawValue && key != Constants.QueryParams.name.rawValue {
-                                        Text("\(String(describing: viewModel.mainFilters[key]!))")
+                                        FilterCellView(filter: value)
                                     }
                                 }
                             }
                         }
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                     }
                 }
+                
+
                 ForEach(!isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
                     
                     CharacterView(character: character, viewModel: viewModel)

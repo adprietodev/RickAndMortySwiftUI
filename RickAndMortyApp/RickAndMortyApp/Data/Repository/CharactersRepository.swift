@@ -29,6 +29,10 @@ class CharactersRepository: CharactersRepositoryProtocol {
     func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
         try localDatasource.setFavoriteCharacter(by: id, isFavourite: isFavourite)
     }
+
+    func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int {
+        try await remoteDatasource.getCountOfTotalCharacters(with: filters)
+    }
 }
 
 fileprivate extension CharacterDTO {

@@ -61,27 +61,30 @@ struct FiltersView<VM: FiltersViewModelProtocol>: View {
             Spacer()
             
             Button{
-                
+                saveFilters()
             } label: {
-                Text("SEARCH")
+                Text(viewModel.countCharacterFilter == 0 ? "SEARCH" : "SEARCH \(viewModel.countCharacterFilter) CHARACTERS")
                     .font(.headline)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color.primaryGreen)
+                    .opacity(viewModel.countCharacterFilter == 0 ? 0.5 : 1)
                     .foregroundColor(.black)
                     .cornerRadius(8)
                     .padding()
             }
+            .disabled(viewModel.countCharacterFilter == 0)
         }
         .preferredColorScheme(.dark)
     }
 
     func saveFilters() {
         delegate?.setMainFilters(mainFilters: viewModel.mainFilters)
+        presentationMode.wrappedValue.dismiss()
     }
     
 }
 
 #Preview {
-    FiltersView(viewModel: FiltersViewModel())
+    TabBarView()
 }

@@ -26,6 +26,10 @@ class CharactersUseCase: CharactersUseCaseProtocol {
         }
         return characters
     }
+
+    func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int {
+        try await repository.getCountOfTotalCharacters(with: filters)
+    }
     
     func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
         try repository.setFavoriteCharacter(by: id, isFavourite: isFavourite)

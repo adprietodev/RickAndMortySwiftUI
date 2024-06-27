@@ -13,4 +13,5 @@ protocol FiltersViewModelProtocol: ObservableObject {
     var selectedStatus: Constants.Status { get set }
     var speciesTextField: String { get set }
     var typeTextField: String { get set }
+    var countCharacterFilter: Int { get set }
 }
