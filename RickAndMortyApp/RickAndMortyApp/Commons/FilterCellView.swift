@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct FilterCellView: View {
-    let filter: Any
+    let key: String
+    let param: Any
+    let delegate: FilterCellDellegate?
     
     var body: some View {
         HStack {
-            Text("\(filter)")
+            Text("\(param)")
                 
             Button {
+                delegate?.removeFilter(with: key)
             } label: {
                 Image(systemName: "xmark.circle")
                     .foregroundStyle(.primaryGreen)
@@ -35,8 +38,4 @@ struct FilterCellView: View {
         .cornerRadius(16)
         .preferredColorScheme(.dark)
     }
-}
-
-#Preview {
-    FilterCellView(filter: "Female")
 }

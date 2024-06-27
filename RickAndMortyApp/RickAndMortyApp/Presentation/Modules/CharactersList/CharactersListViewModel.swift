@@ -73,6 +73,10 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
             Constants.QueryParams.status.rawValue,
             Constants.QueryParams.type.rawValue,
         ])
+
+        if hasAdditionalFilters {
+            setFilteredCharacters()
+        }
     }
 
     func searchByName(_ name: String) {
@@ -119,9 +123,13 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
         }
 
         checkAdditionalFilters()
-
-        if hasAdditionalFilters {
-            setFilteredCharacters()
-        }
     }
+}
+
+extension CharactersListViewModel: FilterCellDellegate {
+    func removeFilter(with key: String) {
+        mainFilters.removeValue(forKey: key)
+        checkAdditionalFilters()
+    }
+    
 }

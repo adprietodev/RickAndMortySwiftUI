@@ -59,7 +59,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                             HStack {
                                 ForEach(viewModel.mainFilters.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
                                     if key != Constants.QueryParams.page.rawValue && key != Constants.QueryParams.name.rawValue {
-                                        FilterCellView(filter: value)
+                                        FilterCellView(key: key, param: value, delegate: viewModel as? FilterCellDellegate )
                                     }
                                 }
                             }
@@ -102,7 +102,6 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
             Constants.QueryParams.status.rawValue,
             Constants.QueryParams.type.rawValue,
         ])
-        print("El filtrado es \(isFiltering)")
         viewModel.updateFilters(newFilters: mainFilters)
     }
 }
