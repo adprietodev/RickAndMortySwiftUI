@@ -13,6 +13,7 @@ protocol CharactersListViewModelProtocol: ObservableObject {
     var isLoading: Bool { get set }
     var mainFilters: [String: Any] { get set }
     var hasAdditionalFilters: Bool { get set }
+    var isFiltering:Bool { get set }
     func checkAdditionalFilters()
     func loadNewPage()
     func searchByName(_ name: String)

@@ -13,7 +13,6 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
     @State var searchNameTextField = ""
     @State private var isSearchBarVisible = true
     @State private var searchTimer: Timer?
-    @State private var isFiltering:  Bool = false
     @State private var isFilterViewPresented = false
     
     var body: some View {
@@ -28,7 +27,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                                 self.searchTimer?.invalidate()
                                 let newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
                                     viewModel.searchByName(searchNameTextField)
-                                    isFiltering = !searchNameTextField.isEmpty
+                                    viewModel.isFiltering = !searchNameTextField.isEmpty
                                 }
                                 self.searchTimer = newTimer
                             }
@@ -70,7 +69,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                 }
                 
 
-                ForEach(!isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
+                ForEach(!viewModel.isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
                     
                     CharacterView(character: character, viewModel: viewModel)
                     .onAppear {
@@ -96,7 +95,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
     }
 
     func setMainFilters(mainFilters: [String:Any]) {
-        isFiltering =  mainFilters.containsAdditionalFilter(keys: [
+        viewModel.isFiltering =  mainFilters.containsAdditionalFilter(keys: [
             Constants.QueryParams.gender.rawValue,
             Constants.QueryParams.species.rawValue,
             Constants.QueryParams.status.rawValue,
