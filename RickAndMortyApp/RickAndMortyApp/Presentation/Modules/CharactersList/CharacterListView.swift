@@ -70,13 +70,17 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                 
 
                 ForEach(!viewModel.isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
-                    
-                    CharacterView(character: character, viewModel: viewModel)
-                    .onAppear {
-                        if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
-                            viewModel.loadNewPage()
+                    ZStack {
+                        CharacterView(character: character, viewModel: viewModel)
+                        .onAppear {
+                            if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
+                                viewModel.loadNewPage()
+                            }
                         }
+                        NavigationLink(destination: CharacterDetailBuilder().build(character: character), label: {})
+                            .opacity(0)
                     }
+                    
                 }
                 
             }

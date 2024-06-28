@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
     // MARK: - Properties
-    let viewModel: VM
+    @StateObject var viewModel: VM
     @State private var isExpanded = false
 
     var body: some View {
@@ -33,18 +33,35 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
                         .offset(y: 16)
                 }
             }
-            Text("\(viewModel.character.name)")
-                .font(.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 24)
-                .padding(.horizontal, 24)
-            
+            HStack {
+                Text("\(viewModel.character.name)")
+                    .font(.title)
+                Spacer()
+                Button {
+                    viewModel.updateFavourite()
+                } label: {
+                    Image(systemName: viewModel.character.isFavorite ? "heart.fill" : "heart")
+                        .font(.title)
+                        .foregroundColor(viewModel.character.isFavorite ? .red : .gray)
+                }
+                .frame(width: 64)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 24)
+            .padding(.horizontal, 24)
+
             VStack(alignment: .leading) {
                 Text("Last known location:")
                     .font(.headline)
+                    .foregroundStyle(Color.gray.opacity(0.5))
                 Text("\(viewModel.character.location.name)")
                     .font(.headline)
-                    .padding(.vertical, 4)
+                Spacer()
+                Text("First seen in:")
+                    .font(.headline)
+                    .foregroundStyle(Color.gray.opacity(0.5))
+                Text("\(viewModel.character.origin.name)")
+                    .font(.headline)
                 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -52,25 +69,24 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
             .padding(.top, 1)
             
             VStack(alignment: .leading) {
-                Text("First seen in:")
-                    .font(.headline)
-                Text("\(viewModel.character.origin.name)")
-                    .font(.headline)
-                    .padding(.vertical, 4)
-                
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 24)
-            .padding(.top, 1)
-            
-            VStack {
-                DisclosureGroup("Temporada 1", isExpanded: $isExpanded) {
+                DisclosureGroup("Episodes", isExpanded: $isExpanded) {
                     VStack(alignment: .leading) {
-                        ForEach(viewModel.character.episodes, id: \.self) { episode in
-                            Text("\(episode)")
+                        ForEach(viewModel.episodes, id: \.id) { episode in
+                            HStack {
+                                Image(systemName: "play.rectangle.fill")
+                                Text("\(episode.episode)")
+                                    .foregroundStyle(.white)
+                                Spacer()
+                                Text("\(episode.name)")
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(4)
+                            
+                            if viewModel.episodes.last?.id != episode.id {
+                                Divider()
+                            }
                         }
                     }
-                    .padding(.leading, 20)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding()
@@ -78,8 +94,9 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(8)
                 .padding(.bottom, 10)
+                .foregroundStyle(.primaryGreen)
             }
-            .padding()
+            .padding(24)
         }
         .preferredColorScheme(.dark)
     }

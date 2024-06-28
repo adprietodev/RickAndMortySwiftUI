@@ -15,7 +15,7 @@ class RemoteLocationsDatasource: LocationsDatasourceProtocol {
     func getLocations(with filters: [String: Any]) async throws -> [LocationDTO] {
         let query = filters.toQueryString()
 
-        guard let url = URL(string: "\(locationsURL)\(query)") else {
+        guard let url = URL(string: "\(locationsURL)?\(query)") else {
             throw Constants.APIError.invalidURL
         }
 

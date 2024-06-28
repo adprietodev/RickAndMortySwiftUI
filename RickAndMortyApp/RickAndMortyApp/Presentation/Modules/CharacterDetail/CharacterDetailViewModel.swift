@@ -5,12 +5,41 @@
 //  Created by Adrian Prieto Villena on 28/6/24.
 //
 
-import Foundation
+import SwiftUI
+import Combine
 
-class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
-    var character: Character
+class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObject {
+    // MARK: - Properties
+    let charactersUseCase : CharactersUseCaseProtocol
+    let episodesUseCase: EpisodesUseCaseProtocol
 
-    init(character: Character) {
+    @Published var character: Character
+    @Published var episodes = [Episode]()    
+
+    init(character: Character, charactersUseCase: CharactersUseCaseProtocol, episodesUseCase: EpisodesUseCaseProtocol) {
         self.character = character
+        self.charactersUseCase = charactersUseCase
+        self.episodesUseCase = episodesUseCase
+        getEpisodes(by: character.episodes)
+    }
+
+    // MARK: - Functions
+    func updateFavourite() {
+        do {
+            character.isFavorite.toggle()
+            try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
+        } catch {
+            print(error)
+        }
+    }
+
+    func getEpisodes(by ids: [Int]) {
+        Task {
+            do {
+                episodes = try await episodesUseCase.getEpisodes(by: ids)
+            } catch {
+                print(error)
+            }
+        }
     }
 }

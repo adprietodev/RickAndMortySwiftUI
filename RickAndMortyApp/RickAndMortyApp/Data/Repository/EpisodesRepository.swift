@@ -20,6 +20,11 @@ class EpisodesRepository: EpisodesRepositoryProtocol {
         let episodesDTO = try await datasource.getEpisodes(with: filters)
         return episodesDTO.map { $0.toDomain() }
     }
+
+    func getEpisodes(by ids: [Int]) async throws -> [Episode]  {
+        let episodesDTO = try await datasource.getEpisodes(by: ids)
+        return episodesDTO.map { $0.toDomain() }
+    }
 }
 
 fileprivate extension EpisodeDTO {

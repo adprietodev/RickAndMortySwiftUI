@@ -15,7 +15,7 @@ class ApiRickAndMoryCharactersDatasource: RemoteCharactersDatasourceProtocol {
     func getCharacters(with filters: [String: Any]) async throws -> [CharacterDTO] {
         let query = filters.toQueryString()
 
-        guard let url = URL(string: "\(charactersURL)\(query)") else {
+        guard let url = URL(string: "\(charactersURL)?\(query)") else {
             throw Constants.APIError.invalidURL
         }
 
@@ -43,7 +43,7 @@ class ApiRickAndMoryCharactersDatasource: RemoteCharactersDatasourceProtocol {
     func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int {
         let query = filters.toQueryString()
     
-        guard let url = URL(string: "\(charactersURL)\(query)") else {
+        guard let url = URL(string: "\(charactersURL)?\(query)") else {
             throw Constants.APIError.invalidURL
         }
 

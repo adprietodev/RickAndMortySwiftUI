@@ -17,6 +17,6 @@ struct CharacterDTO: Codable {
     let origin: CharacterLocationDTO
     let location: CharacterLocationDTO
     let image: String
-    let episodes: [String]?
+    let episode: [String]?
     let created: String
 }
