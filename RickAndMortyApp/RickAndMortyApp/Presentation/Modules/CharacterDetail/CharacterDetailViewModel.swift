@@ -26,9 +26,8 @@ class CharacterDetailViewModel: ObservableObject {
     @MainActor
     func updateFavourite() {
         do {
-            try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
+            try charactersUseCase.setFavoriteCharacter(character: character)
         } catch {
-            print(error)
         }
     }
 
@@ -37,7 +36,6 @@ class CharacterDetailViewModel: ObservableObject {
             do {
                 episodes = try await episodesUseCase.getEpisodes(by: ids)
             } catch {
-                print(error)
             }
         }
     }

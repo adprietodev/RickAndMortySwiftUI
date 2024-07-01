@@ -71,12 +71,23 @@ struct CharacterListView<VM: CharactersListViewModel>: View, CharactersViewDeleg
 
                 ForEach(Array((!viewModel.isFiltering ? viewModel.characters : viewModel.filteredCharacters).enumerated()), id: \.element.id) { (index, character) in
                     ZStack {
-                        CharacterView(character: $viewModel.characters[index], viewModel: viewModel)
-                        .onAppear {
-                            if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
-                                viewModel.loadNewPage()
-                            }
+                        
+                        if !viewModel.isFiltering {
+                            CharacterView(character: $viewModel.characters[index], viewModel: viewModel)
+                                .onAppear {
+                                    if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
+                                        viewModel.loadNewPage()
+                                    }
+                                }
+                        } else {
+                            CharacterView(character: $viewModel.filteredCharacters[index], viewModel: viewModel)
+                                .onAppear {
+                                    if character.id == viewModel.filteredCharacters.last?.id && !viewModel.isLoading {
+                                        viewModel.loadNewPage()
+                                    }
+                                }
                         }
+                        
                         NavigationLink(destination: CharacterDetailBuilder().build(character: character, delegate: viewModel as CharacterFavouriteDelegate), label: {})
                             .opacity(0)
                     }

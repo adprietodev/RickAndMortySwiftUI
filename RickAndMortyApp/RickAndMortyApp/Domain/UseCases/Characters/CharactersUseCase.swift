@@ -31,7 +31,7 @@ class CharactersUseCase: CharactersUseCaseProtocol {
         try await repository.getCountOfTotalCharacters(with: filters)
     }
     
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
-        try repository.setFavoriteCharacter(by: id, isFavourite: isFavourite)
+    func setFavoriteCharacter(character: Character) throws {
+        try repository.setFavoriteCharacter(character: character)
     }
 }

@@ -28,7 +28,7 @@ struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
                         .font(.headline)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
-                        .background(Color.primaryGreen)
+                        .background(viewModel.character.status == .alive ? .primaryGreen : viewModel.character.status == .dead ? .deadRed : .white)
                         .foregroundColor(.black)
                         .cornerRadius(8)
                         .offset(y: 16)
