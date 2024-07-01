@@ -15,6 +15,7 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
     @Published var characters = [Character]()
     @Published var filteredCharacters = [Character]()
     @Published var isLoading: Bool = false
+    @Published var isFiltering:  Bool = false
     @Published var hasAdditionalFilters: Bool = false
 
     private var currentPage: Int = 1
@@ -73,6 +74,8 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
             Constants.QueryParams.status.rawValue,
             Constants.QueryParams.type.rawValue,
         ])
+        
+        isFiltering = hasAdditionalFilters || mainFilters.keys.contains(Constants.QueryParams.name.rawValue)
 
         if hasAdditionalFilters {
             setFilteredCharacters()

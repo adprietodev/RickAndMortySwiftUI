@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct CharacterView<VM: CharactersListViewModelProtocol>: View {
-    @ObservedObject var character: Character
+    @StateObject var character: Character
     var viewModel: VM
 
     var body: some View {
         HStack{
-            ImageURLView(character: character)
+            ImageURLView(character: character, size: 64)
                 .border(
                     character.status == .alive ? .primaryGreen : character.status == .dead ? .deadRed : .white, width: 3
                 )

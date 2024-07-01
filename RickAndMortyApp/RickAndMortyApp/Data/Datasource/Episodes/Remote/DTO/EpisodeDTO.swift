@@ -14,9 +14,11 @@ struct EpisodeDTO: Codable {
     let episode: String
     let characters: [String]
     let created: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, episode, characters, created
+        case airDate = "air_date"
+    }
 }
 
-enum CodingKeys: String, CodingKey {
-    case id, name, episode, characters, created
-    case airDate = "air_date"
-}
+

@@ -11,9 +11,9 @@ struct Constants {
     
     enum URLs: String {
         case baseURL = "https://rickandmortyapi.com/api"
-        case charactersEndpoint = "/character?"
-        case locationsEndpoint = "/location?"
-        case episodesEndpoint = "/episode?"
+        case charactersEndpoint = "/character/"
+        case locationsEndpoint = "/location/"
+        case episodesEndpoint = "/episode/"
 
         var fullURL: String {
             "\(URLs.baseURL.rawValue)\(self.rawValue)"
