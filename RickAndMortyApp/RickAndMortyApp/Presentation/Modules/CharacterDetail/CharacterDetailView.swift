@@ -11,7 +11,7 @@ struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
     // MARK: - Properties
     @StateObject var viewModel: VM
     @State private var isExpanded = false
-    var delegate: CharacterFavouriteDelegate?
+    weak var delegate: CharacterFavouriteDelegate?
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -116,13 +116,3 @@ struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
     }
 }
 
-
-#Preview {
-    var characterMock = Character(id: 0, name: "Adrian", status: .alive, species: "Human", type: "Human", gender: .male, origin: Location(id: 0, name:  "Torrent"), location: Location(id: 1, name: "Valencia"), image: "https://rickandmortyapi.com/api/character/avatar/156.jpeg", episodes: [1,2,3], created: "2017-12-29T15:44:40.083Z")
-    
-    let remoteCharactersDatasource = ApiRickAndMoryCharactersDatasource()
-    let localCharactersDatasource = LocalRickAndMortyCharactersDatasource()
-    let charactersRepository = CharactersRepository(remoteDatasource: remoteCharactersDatasource, localDatasource: localCharactersDatasource)
-    let charactersUseCase = CharactersUseCase(repository: charactersRepository)
-    return CharacterDetailBuilder().build(character: characterMock, delegate: CharactersListViewModel(charactersUseCase: charactersUseCase))
-}

@@ -58,7 +58,7 @@ struct CharacterListView<VM: CharactersListViewModel>: View, CharactersViewDeleg
                             HStack {
                                 ForEach(viewModel.mainFilters.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
                                     if key != Constants.QueryParams.page.rawValue && key != Constants.QueryParams.name.rawValue {
-                                        FilterCellView(key: key, param: value, delegate: viewModel as? FilterCellDellegate )
+                                        FilterCellView(key: key, param: value, delegate: viewModel as FilterCellDellegate )
                                     }
                                 }
                             }
@@ -71,16 +71,15 @@ struct CharacterListView<VM: CharactersListViewModel>: View, CharactersViewDeleg
 
                 ForEach(Array((!viewModel.isFiltering ? viewModel.characters : viewModel.filteredCharacters).enumerated()), id: \.element.id) { (index, character) in
                     ZStack {
-                        
                         if !viewModel.isFiltering {
-                            CharacterView(character: $viewModel.characters[index], viewModel: viewModel)
+                            CharacterView(character: $viewModel.characters[index], delegate: viewModel as CharacterFavouriteDelegate)
                                 .onAppear {
                                     if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
                                         viewModel.loadNewPage()
                                     }
                                 }
                         } else {
-                            CharacterView(character: $viewModel.filteredCharacters[index], viewModel: viewModel)
+                            CharacterView(character: $viewModel.filteredCharacters[index], delegate: viewModel as CharacterFavouriteDelegate)
                                 .onAppear {
                                     if character.id == viewModel.filteredCharacters.last?.id && !viewModel.isLoading {
                                         viewModel.loadNewPage()
