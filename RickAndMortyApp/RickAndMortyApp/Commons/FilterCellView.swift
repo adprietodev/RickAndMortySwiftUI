@@ -10,7 +10,7 @@ import SwiftUI
 struct FilterCellView: View {
     let key: String
     let param: Any
-    let delegate: FilterCellDellegate?
+    weak var delegate: FilterCellDellegate?
     
     var body: some View {
         HStack {

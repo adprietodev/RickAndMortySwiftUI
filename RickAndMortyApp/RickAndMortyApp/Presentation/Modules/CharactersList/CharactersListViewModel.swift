@@ -95,16 +95,25 @@ class CharactersListViewModel: ObservableObject, CharacterFavouriteDelegate {
 
     func updateFavourite(character: Character) {
         do {
-            guard let indexCharacter = characters.firstIndex(where: { $0.id == character.id}) else { return }
-            characters[indexCharacter].isFavorite.toggle()
-            try charactersUseCase.setFavoriteCharacter(character: characters[indexCharacter])
+            if isFiltering {
+                guard let indexCharacter = filteredCharacters.firstIndex(where: { $0.id == character.id }) else { return }
+                filteredCharacters[indexCharacter].isFavorite.toggle()
+                if let originalIndex = characters.firstIndex(where: { $0.id == character.id })  {
+                    characters[originalIndex].isFavorite = filteredCharacters[indexCharacter].isFavorite
+                }
+                try charactersUseCase.setFavoriteCharacter(character: filteredCharacters[indexCharacter])
+            } else {
+                guard let indexCharacter = characters.firstIndex(where: { $0.id == character.id }) else { return }
+                characters[indexCharacter].isFavorite.toggle()
+                try charactersUseCase.setFavoriteCharacter(character: characters[indexCharacter])
+            }
         } catch {
         }
     }
 
     @MainActor
     func loadNewPage() {
-        if mainFilters.count > 1 {
+        if isFiltering {
             filteredPage += 1
             mainFilters[Constants.QueryParams.page.rawValue] = "\(filteredPage)"
             setFilteredCharacters()
@@ -137,6 +146,7 @@ extension CharactersListViewModel: FilterCellDellegate {
     func removeFilter(with key: String) {
         mainFilters.removeValue(forKey: key)
         filteredPage = 1
+        mainFilters[Constants.QueryParams.page.rawValue] = filteredPage
         checkAdditionalFilters()
     }
     

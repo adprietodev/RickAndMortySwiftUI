@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CharacterView<VM: CharactersListViewModel>: View {
     @Binding var character: Character
-    var viewModel: VM
+    weak var delegate: CharacterFavouriteDelegate?
 
     var body: some View {
         HStack{
@@ -37,7 +37,7 @@ struct CharacterView<VM: CharactersListViewModel>: View {
             }
             Spacer()
             Button {
-                viewModel.updateFavourite(character: character)
+                delegate?.updateFavourite(character: character)
             } label: {
                 Image(systemName: character.isFavorite ? "heart.fill" : "heart")
                     .font(.title)
