@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FiltersView<VM: FiltersViewModelProtocol>: View {
+struct FiltersView<VM: FiltersViewModel>: View {
     // MARK: - Properties
     @StateObject var viewModel: VM
     var delegate: CharactersViewDelegate?

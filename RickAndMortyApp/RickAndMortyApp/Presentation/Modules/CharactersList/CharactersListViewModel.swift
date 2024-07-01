@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol {
+class CharactersListViewModel: ObservableObject, CharacterFavouriteDelegate {
     let charactersUseCase: CharactersUseCaseProtocol
 
     @Published var mainFilters = [String: Any]()
@@ -95,6 +95,8 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
 
     func updateFavourite(character: Character) {
         do {
+            guard let indexCharacter = characters.firstIndex(where: { $0.id == character.id}) else { return }
+            characters[indexCharacter].isFavorite.toggle()
             try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
         } catch {
             print(error)

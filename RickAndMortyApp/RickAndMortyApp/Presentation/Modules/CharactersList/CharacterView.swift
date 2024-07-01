@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CharacterView<VM: CharactersListViewModelProtocol>: View {
-    @StateObject var character: Character
+struct CharacterView<VM: CharactersListViewModel>: View {
+    @Binding var character: Character
     var viewModel: VM
 
     var body: some View {
@@ -34,7 +34,6 @@ struct CharacterView<VM: CharactersListViewModelProtocol>: View {
             }
             Spacer()
             Button {
-                character.isFavorite.toggle()
                 viewModel.updateFavourite(character: character)
             } label: {
                 Image(systemName: character.isFavorite ? "heart.fill" : "heart")
