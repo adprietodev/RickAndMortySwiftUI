@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class Character: Identifiable, ObservableObject {
+struct Character: Identifiable {
     let id: Int
     let name: String
     let status: Constants.Status
@@ -20,7 +20,7 @@ class Character: Identifiable, ObservableObject {
     let image: String
     let episodes: [Int]
     let created: String
-    @Published var isFavorite: Bool = false
+    var isFavorite: Bool = false
 
     init(id: Int, name: String, status: Constants.Status, species: String, type: String, gender: Constants.Gender, origin: Location, location: Location, image: String, episodes: [Int], created: String) {
         self.id = id

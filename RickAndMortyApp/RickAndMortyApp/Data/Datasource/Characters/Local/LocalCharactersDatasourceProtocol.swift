@@ -9,5 +9,5 @@ import Foundation
 
 protocol LocalCharactersDatasourceProtocol {
     func getFavouriteCharactersIDs() throws -> [Int]
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws
+    func setFavoriteCharacter(character: Character) throws
 }

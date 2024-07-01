@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol {
+class CharactersListViewModel: ObservableObject, CharacterFavouriteDelegate {
     let charactersUseCase: CharactersUseCaseProtocol
 
     @Published var mainFilters = [String: Any]()
@@ -42,31 +42,29 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
         }
     }
 
+    
+    @MainActor
     func setFilteredCharacters() {
         Task {
             do {
-                var newCharacters = [Character]()
+                let newCharacters: [Character]
                 if filteredPage == 1 {
                     newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self else { return }
-                        filteredCharacters = newCharacters
-                        isLoading = false
-                    }
+                    self.filteredCharacters = newCharacters
                 } else {
                     newCharacters = try await charactersUseCase.getCharacters(with: mainFilters)
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self else { return }
-                        filteredCharacters += newCharacters
-                        isLoading = false
-                    }
+                    self.filteredCharacters += newCharacters
                 }
+                self.isLoading = false
             } catch {
-                isLoading = false
+                self.isLoading = false
+                print(error)
             }
         }
     }
 
+
+    @MainActor
     func checkAdditionalFilters() {
         hasAdditionalFilters = mainFilters.containsAdditionalFilter(keys: [
             Constants.QueryParams.gender.rawValue,
@@ -75,6 +73,7 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
             Constants.QueryParams.type.rawValue,
         ])
         
+        
         isFiltering = hasAdditionalFilters || mainFilters.keys.contains(Constants.QueryParams.name.rawValue)
 
         if hasAdditionalFilters {
@@ -82,6 +81,7 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
         }
     }
 
+    @MainActor
     func searchByName(_ name: String) {
         filteredPage = 1
         if name.isEmpty {
@@ -95,12 +95,14 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
 
     func updateFavourite(character: Character) {
         do {
-            try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
+            guard let indexCharacter = characters.firstIndex(where: { $0.id == character.id}) else { return }
+            characters[indexCharacter].isFavorite.toggle()
+            try charactersUseCase.setFavoriteCharacter(character: characters[indexCharacter])
         } catch {
-            print(error)
         }
     }
 
+    @MainActor
     func loadNewPage() {
         if mainFilters.count > 1 {
             filteredPage += 1
@@ -114,6 +116,7 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
         isLoading = true
     }
 
+    @MainActor
     func updateFilters(newFilters: [String: Any]) {
         let specialQuery: [Constants.QueryParams] = [.gender,.species,.status,.type]
         
@@ -130,8 +133,10 @@ class CharactersListViewModel: ObservableObject, CharactersListViewModelProtocol
 }
 
 extension CharactersListViewModel: FilterCellDellegate {
+    @MainActor
     func removeFilter(with key: String) {
         mainFilters.removeValue(forKey: key)
+        filteredPage = 1
         checkAdditionalFilters()
     }
     

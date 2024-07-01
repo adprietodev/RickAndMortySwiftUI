@@ -17,11 +17,11 @@ class CharactersUseCase: CharactersUseCaseProtocol {
 
     // MARK: - Functions
     func getCharacters(with filters: [String: Any]) async throws -> [Character] {
-        let characters = try await repository.getCharacters(with: filters)
+        var characters = try await repository.getCharacters(with: filters)
         let favouritesIDs = try repository.getFavouriteCharactersIDs()
-        characters.forEach {
-            if favouritesIDs.contains($0.id) {
-                $0.isFavorite = true
+        characters.enumerated().forEach { (index, character) in
+            if favouritesIDs.contains(character.id) {
+                characters[index].isFavorite = true
             }
         }
         return characters
@@ -31,7 +31,7 @@ class CharactersUseCase: CharactersUseCaseProtocol {
         try await repository.getCountOfTotalCharacters(with: filters)
     }
     
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
-        try repository.setFavoriteCharacter(by: id, isFavourite: isFavourite)
+    func setFavoriteCharacter(character: Character) throws {
+        try repository.setFavoriteCharacter(character: character)
     }
 }

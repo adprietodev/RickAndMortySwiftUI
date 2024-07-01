@@ -16,15 +16,15 @@ class LocalRickAndMortyCharactersDatasource: LocalCharactersDatasourceProtocol {
         return []
     }
 
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
+    func setFavoriteCharacter(character: Character) throws {
         var favouriteIDs = try getFavouriteCharactersIDs()
         
-        if isFavourite {
-            if !favouriteIDs.contains(id) {
-                favouriteIDs.append(id)
+        if character.isFavorite {
+            if !favouriteIDs.contains(character.id) {
+                favouriteIDs.append(character.id)
             }
         } else {
-            if let index = favouriteIDs.firstIndex(of: id) {
+            if let index = favouriteIDs.firstIndex(of: character.id) {
                 favouriteIDs.remove(at: index)
             }
         }

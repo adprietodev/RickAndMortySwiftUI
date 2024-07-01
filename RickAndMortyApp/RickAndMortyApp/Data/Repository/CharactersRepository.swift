@@ -26,8 +26,8 @@ class CharactersRepository: CharactersRepositoryProtocol {
     func getFavouriteCharactersIDs() throws -> [Int] {
         try localDatasource.getFavouriteCharactersIDs()
     }
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
-        try localDatasource.setFavoriteCharacter(by: id, isFavourite: isFavourite)
+    func setFavoriteCharacter(character: Character) throws {
+        try localDatasource.setFavoriteCharacter(character: character)
     }
 
     func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int {

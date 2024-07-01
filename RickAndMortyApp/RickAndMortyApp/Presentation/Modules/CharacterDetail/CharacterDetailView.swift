@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
+struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
     // MARK: - Properties
     @StateObject var viewModel: VM
     @State private var isExpanded = false
+    var delegate: CharacterFavouriteDelegate?
 
     var body: some View {
         ScrollView(.vertical) {
@@ -27,7 +28,7 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
                         .font(.headline)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
-                        .background(Color.primaryGreen)
+                        .background(viewModel.character.status == .alive ? .primaryGreen : viewModel.character.status == .dead ? .deadRed : .white)
                         .foregroundColor(.black)
                         .cornerRadius(8)
                         .offset(y: 16)
@@ -38,7 +39,9 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
                     .font(.title)
                 Spacer()
                 Button {
+                    viewModel.character.isFavorite.toggle()
                     viewModel.updateFavourite()
+                    delegate?.updateFavourite(character: viewModel.character)
                 } label: {
                     Image(systemName: viewModel.character.isFavorite ? "heart.fill" : "heart")
                         .font(.title)
@@ -104,5 +107,11 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
 
 
 #Preview {
-    CharacterDetailBuilder().build(character: Character(id: 0, name: "Adrian", status: .alive, species: "Human", type: "Human", gender: .male, origin: Location(id: 0, name:  "Torrent"), location: Location(id: 1, name: "Valencia"), image: "https://rickandmortyapi.com/api/character/avatar/156.jpeg", episodes: [1,2,3], created: "2017-12-29T15:44:40.083Z"))
+    var characterMock = Character(id: 0, name: "Adrian", status: .alive, species: "Human", type: "Human", gender: .male, origin: Location(id: 0, name:  "Torrent"), location: Location(id: 1, name: "Valencia"), image: "https://rickandmortyapi.com/api/character/avatar/156.jpeg", episodes: [1,2,3], created: "2017-12-29T15:44:40.083Z")
+    
+    let remoteCharactersDatasource = ApiRickAndMoryCharactersDatasource()
+    let localCharactersDatasource = LocalRickAndMortyCharactersDatasource()
+    let charactersRepository = CharactersRepository(remoteDatasource: remoteCharactersDatasource, localDatasource: localCharactersDatasource)
+    let charactersUseCase = CharactersUseCase(repository: charactersRepository)
+    return CharacterDetailBuilder().build(character: characterMock, delegate: CharactersListViewModel(charactersUseCase: charactersUseCase))
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 class CharacterDetailBuilder {
-    func build(character: Character) -> CharacterDetailView<CharacterDetailViewModel> {
+    func build(character: Character, delegate: CharacterFavouriteDelegate) -> CharacterDetailView<CharacterDetailViewModel> {
         let remoteCharactersDatasource = ApiRickAndMoryCharactersDatasource()
         let localCharactersDatasource = LocalRickAndMortyCharactersDatasource()
         let charactersRepository = CharactersRepository(remoteDatasource: remoteCharactersDatasource, localDatasource: localCharactersDatasource)
@@ -19,7 +19,8 @@ class CharacterDetailBuilder {
         let episodesUseCase = EpisodesUseCase(repository: episodesRepository)
         
         let viewModel = CharacterDetailViewModel(character: character, charactersUseCase: charactersUseCase, episodesUseCase: episodesUseCase)
-        let view = CharacterDetailView(viewModel: viewModel)
+        var view = CharacterDetailView(viewModel: viewModel)
+        view.delegate = delegate
         return view
     }
 }

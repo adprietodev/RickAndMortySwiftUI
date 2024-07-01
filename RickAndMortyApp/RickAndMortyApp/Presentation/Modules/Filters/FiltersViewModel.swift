@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class FiltersViewModel: FiltersViewModelProtocol,ObservableObject {
+class FiltersViewModel: ObservableObject {
     // MARK: - Properties
     let charactersUseCase: CharactersUseCaseProtocol
     @Published var mainFilters: [String : Any]

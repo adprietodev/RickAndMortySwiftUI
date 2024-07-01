@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Episode {
+struct Episode {
     let id: Int
     let name: String
     let airDate: String

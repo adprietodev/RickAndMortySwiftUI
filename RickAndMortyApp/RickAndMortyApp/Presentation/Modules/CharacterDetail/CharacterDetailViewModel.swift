@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObject {
+class CharacterDetailViewModel: ObservableObject {
     // MARK: - Properties
     let charactersUseCase: CharactersUseCaseProtocol
     let episodesUseCase: EpisodesUseCaseProtocol
@@ -26,11 +26,8 @@ class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObje
     @MainActor
     func updateFavourite() {
         do {
-            character.isFavorite.toggle()
-            try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
-            objectWillChange.send()
+            try charactersUseCase.setFavoriteCharacter(character: character)
         } catch {
-            print(error)
         }
     }
 
@@ -39,7 +36,6 @@ class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObje
             do {
                 episodes = try await episodesUseCase.getEpisodes(by: ids)
             } catch {
-                print(error)
             }
         }
     }
