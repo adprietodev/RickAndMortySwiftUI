@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-protocol CharactersViewDelegate {
+protocol CharactersViewDelegate{
     func setMainFilters(mainFilters: [String:Any])
 }
 
-protocol FilterCellDellegate {
+protocol FilterCellDellegate: AnyObject {
     func removeFilter(with key: String)
 }
 
-protocol CharacterFavouriteDelegate {
+protocol CharacterFavouriteDelegate: AnyObject {
     func updateFavourite(character: Character)
 }

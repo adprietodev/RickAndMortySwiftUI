@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CharacterView<VM: CharactersListViewModel>: View {
     @Binding var character: Character
-    var viewModel: VM
+    weak var delegate: CharacterFavouriteDelegate?
 
     var body: some View {
         HStack{
@@ -20,21 +20,24 @@ struct CharacterView<VM: CharactersListViewModel>: View {
                 .cornerRadius(6)
             VStack(alignment: .leading) {
                 Text("\(character.name)")
-                    .font(.title3)
+                    .font(Font(UIFont.robotoMedium(size: 24) ?? UIFont.systemFont(ofSize: 24)))
                 HStack {
                     Text("\(character.species)")
+                        .font(Font(UIFont.robotoRegular(size: 18) ?? UIFont.systemFont(ofSize: 12)))
                     Text("\(character.gender.rawValue)")
+                        .font(Font(UIFont.robotoRegular(size: 18) ?? UIFont.systemFont(ofSize: 12)))
                 }
                 HStack {
                     Text("\(character.status.rawValue)")
                         .foregroundStyle(
                             character.status == .alive ? .primaryGreen : character.status == .dead ? .deadRed : .white
                         )
+                        .font(Font(UIFont.robotoRegular(size: 18) ?? UIFont.systemFont(ofSize: 12)))
                 }
             }
             Spacer()
             Button {
-                viewModel.updateFavourite(character: character)
+                delegate?.updateFavourite(character: character)
             } label: {
                 Image(systemName: character.isFavorite ? "heart.fill" : "heart")
                     .font(.title)

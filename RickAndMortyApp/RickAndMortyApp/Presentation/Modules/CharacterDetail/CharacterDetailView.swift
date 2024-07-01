@@ -11,7 +11,8 @@ struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
     // MARK: - Properties
     @StateObject var viewModel: VM
     @State private var isExpanded = false
-    var delegate: CharacterFavouriteDelegate?
+    weak var delegate: CharacterFavouriteDelegate?
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ScrollView(.vertical) {
@@ -25,18 +26,18 @@ struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
                 VStack {
                     Spacer()
                     Text("\(viewModel.character.status.rawValue)")
-                        .font(.headline)
+                        .font(Font(UIFont.bangers(size: 32) ?? UIFont.systemFont(ofSize: 32)))
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
                         .background(viewModel.character.status == .alive ? .primaryGreen : viewModel.character.status == .dead ? .deadRed : .white)
-                        .foregroundColor(.black)
+                        .foregroundColor(viewModel.character.status == .unknown ? .black : .white)
                         .cornerRadius(8)
-                        .offset(y: 16)
+                        .offset(y: 24)
                 }
             }
             HStack {
                 Text("\(viewModel.character.name)")
-                    .font(.title)
+                    .font(Font(UIFont.robotoBold(size: 32) ?? UIFont.systemFont(ofSize: 32)))
                 Spacer()
                 Button {
                     viewModel.character.isFavorite.toggle()
@@ -102,16 +103,16 @@ struct CharacterDetailView<VM: CharacterDetailViewModel>: View {
             .padding(24)
         }
         .preferredColorScheme(.dark)
+        .navigationTitle("Character")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                   
+                }
+            }
+        }
     }
 }
 
-
-#Preview {
-    var characterMock = Character(id: 0, name: "Adrian", status: .alive, species: "Human", type: "Human", gender: .male, origin: Location(id: 0, name:  "Torrent"), location: Location(id: 1, name: "Valencia"), image: "https://rickandmortyapi.com/api/character/avatar/156.jpeg", episodes: [1,2,3], created: "2017-12-29T15:44:40.083Z")
-    
-    let remoteCharactersDatasource = ApiRickAndMoryCharactersDatasource()
-    let localCharactersDatasource = LocalRickAndMortyCharactersDatasource()
-    let charactersRepository = CharactersRepository(remoteDatasource: remoteCharactersDatasource, localDatasource: localCharactersDatasource)
-    let charactersUseCase = CharactersUseCase(repository: charactersRepository)
-    return CharacterDetailBuilder().build(character: characterMock, delegate: CharactersListViewModel(charactersUseCase: charactersUseCase))
-}

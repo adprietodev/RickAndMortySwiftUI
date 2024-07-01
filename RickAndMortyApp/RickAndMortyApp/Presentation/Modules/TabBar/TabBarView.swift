@@ -26,12 +26,18 @@ struct TabBarView: View {
                         Image(systemName: "person.fill")
                     }
                     .tag(0)
-                    LocationsList()
+                    LocationsListBuilder().build()
                     .tabItem {
                         Text("Locations")
-                        Image(systemName: "mappin.and.ellipse")
+                        Image(systemName: "globe")
                     }
                     .tag(1)
+                    EpisodesListBuilder().build()
+                    .tabItem {
+                        Text("Episodes")
+                        Image(systemName: "play.rectangle.fill")
+                    }
+                    .tag(2)
                 }
                 .background(.red)
                 .tint(.primaryGreen)

@@ -10,11 +10,12 @@ import SwiftUI
 struct FilterCellView: View {
     let key: String
     let param: Any
-    let delegate: FilterCellDellegate?
+    weak var delegate: FilterCellDellegate?
     
     var body: some View {
         HStack {
             Text("\(param)")
+                .font(Font(UIFont.robotoRegular(size: 16) ?? UIFont.systemFont(ofSize: 16)))
                 
             Button {
                 delegate?.removeFilter(with: key)
