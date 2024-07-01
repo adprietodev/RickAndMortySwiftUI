@@ -88,8 +88,11 @@ struct CharacterListView<VM: CharactersListViewModel>: View, CharactersViewDeleg
                                 }
                         }
                         
-                        NavigationLink(destination: CharacterDetailBuilder().build(character: character, delegate: viewModel as CharacterFavouriteDelegate), label: {})
-                            .opacity(0)
+                        NavigationLink(
+                            destination: CharacterDetailBuilder().build(character: character, delegate: viewModel as CharacterFavouriteDelegate)
+                            .toolbar(.hidden,for: .tabBar)
+                            ,label: {})
+                                .opacity(0)
                     }
                     
                 }
@@ -98,9 +101,7 @@ struct CharacterListView<VM: CharactersListViewModel>: View, CharactersViewDeleg
             .listRowSpacing(16)
             .scrollIndicators(.hidden)
             .navigationTitle("Characters")
-            .onAppear {
-                UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.primaryGreen]
-            }
+
             
             if viewModel.isLoading {
                 ProgressView()
