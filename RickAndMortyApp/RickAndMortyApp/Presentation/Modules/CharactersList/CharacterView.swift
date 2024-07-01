@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CharacterView<VM: CharactersListViewModelProtocol>: View {
-    @ObservedObject var character: Character
+    @StateObject var character: Character
     var viewModel: VM
 
     var body: some View {

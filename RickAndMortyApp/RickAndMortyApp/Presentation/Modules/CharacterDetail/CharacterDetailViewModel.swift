@@ -6,15 +6,14 @@
 //
 
 import SwiftUI
-import Combine
 
 class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObject {
     // MARK: - Properties
-    let charactersUseCase : CharactersUseCaseProtocol
+    let charactersUseCase: CharactersUseCaseProtocol
     let episodesUseCase: EpisodesUseCaseProtocol
 
     @Published var character: Character
-    @Published var episodes = [Episode]()    
+    @Published var episodes = [Episode]()
 
     init(character: Character, charactersUseCase: CharactersUseCaseProtocol, episodesUseCase: EpisodesUseCaseProtocol) {
         self.character = character
@@ -24,10 +23,12 @@ class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObje
     }
 
     // MARK: - Functions
+    @MainActor
     func updateFavourite() {
         do {
             character.isFavorite.toggle()
             try charactersUseCase.setFavoriteCharacter(by: character.id, isFavourite: character.isFavorite)
+            objectWillChange.send()
         } catch {
             print(error)
         }
@@ -43,3 +44,4 @@ class CharacterDetailViewModel: CharacterDetailViewModelProtocol, ObservableObje
         }
     }
 }
+

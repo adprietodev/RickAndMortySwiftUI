@@ -102,6 +102,7 @@ struct CharacterDetailView<VM: CharacterDetailViewModelProtocol>: View {
     }
 }
 
+
 #Preview {
     CharacterDetailBuilder().build(character: Character(id: 0, name: "Adrian", status: .alive, species: "Human", type: "Human", gender: .male, origin: Location(id: 0, name:  "Torrent"), location: Location(id: 1, name: "Valencia"), image: "https://rickandmortyapi.com/api/character/avatar/156.jpeg", episodes: [1,2,3], created: "2017-12-29T15:44:40.083Z"))
 }

@@ -36,3 +36,4 @@ class Character: Identifiable, ObservableObject {
         self.created = created
     }
 }
+
