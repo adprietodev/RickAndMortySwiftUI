@@ -15,6 +15,7 @@ struct FilterCellView: View {
     var body: some View {
         HStack {
             Text("\(param)")
+                .font(Font(UIFont.robotoRegular(size: 16) ?? UIFont.systemFont(ofSize: 16)))
                 
             Button {
                 delegate?.removeFilter(with: key)
