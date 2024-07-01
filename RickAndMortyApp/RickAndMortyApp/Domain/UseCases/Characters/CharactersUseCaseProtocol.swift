@@ -9,5 +9,6 @@ import Foundation
 
 protocol CharactersUseCaseProtocol {
     func getCharacters(with filters: [String: Any]) async throws -> [Character]
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws
+    func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int
+    func setFavoriteCharacter(character: Character) throws
 }

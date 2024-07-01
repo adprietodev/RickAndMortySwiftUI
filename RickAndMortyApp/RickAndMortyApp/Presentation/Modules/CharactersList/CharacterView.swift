@@ -7,28 +7,33 @@
 
 import SwiftUI
 
-struct CharacterView<VM: CharactersListViewModelProtocol>: View {
-    @ObservedObject var character: Character
+struct CharacterView<VM: CharactersListViewModel>: View {
+    @Binding var character: Character
     var viewModel: VM
 
     var body: some View {
         HStack{
-            ImageURLView(imageURLString: character.image)
+            ImageURLView(character: character, size: 64)
+                .border(
+                    character.status == .alive ? .primaryGreen : character.status == .dead ? .deadRed : .white, width: 3
+                )
+                .cornerRadius(6)
             VStack(alignment: .leading) {
                 Text("\(character.name)")
-                    .font(.title2)
-                HStack{
+                    .font(.title3)
+                HStack {
+                    Text("\(character.species)")
+                    Text("\(character.gender.rawValue)")
+                }
+                HStack {
                     Text("\(character.status.rawValue)")
                         .foregroundStyle(
                             character.status == .alive ? .primaryGreen : character.status == .dead ? .deadRed : .white
                         )
-                    Text("\(character.species)")
                 }
-                Text("\(character.gender.rawValue)")
             }
             Spacer()
             Button {
-                character.isFavorite.toggle()
                 viewModel.updateFavourite(character: character)
             } label: {
                 Image(systemName: character.isFavorite ? "heart.fill" : "heart")

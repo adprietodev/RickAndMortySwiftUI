@@ -26,8 +26,12 @@ class CharactersRepository: CharactersRepositoryProtocol {
     func getFavouriteCharactersIDs() throws -> [Int] {
         try localDatasource.getFavouriteCharactersIDs()
     }
-    func setFavoriteCharacter(by id: Int, isFavourite: Bool) throws {
-        try localDatasource.setFavoriteCharacter(by: id, isFavourite: isFavourite)
+    func setFavoriteCharacter(character: Character) throws {
+        try localDatasource.setFavoriteCharacter(character: character)
+    }
+
+    func getCountOfTotalCharacters(with filters: [String: Any]) async throws -> Int {
+        try await remoteDatasource.getCountOfTotalCharacters(with: filters)
     }
 }
 
@@ -49,7 +53,7 @@ fileprivate extension CharacterDTO {
                 name: self.location.name
             ),
             image: self.image,
-            episodes: self.episodes?.compactMap {
+            episodes: self.episode?.compactMap {
                 Int($0.split(separator: "/").last ?? "0")
             } ?? [],
             created: self.created

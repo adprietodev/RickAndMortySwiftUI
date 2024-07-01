@@ -8,33 +8,30 @@
 import SwiftUI
 
 struct ImageURLView: View {
-    let imageURLString: String
+    let character: Character
+    let size: CGFloat
 
     var body: some View {
-        AsyncImage(url: URL(string: imageURLString)) { phase in
+        AsyncImage(url: URL(string: character.image)) { phase in
                     switch phase {
                     case .empty:
                         ProgressView()
-                            .frame(width: 64, height: 64)
+                            .frame(width: size, height: size)
                     case .success(let image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 64, height: 64)
+                            .frame(width: size, height: size)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     case .failure:
                         Image("characterPlaceholder")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.red)
-                            .frame(width: 64, height: 64)
+                            .frame(width: size, height: size)
                     @unknown default:
                         EmptyView()
                     }
                 }
     }
-}
-
-#Preview {
-    ImageURLView(imageURLString: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
 }

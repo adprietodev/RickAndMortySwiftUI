@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersViewDelegate  {
+struct CharacterListView<VM: CharactersListViewModel>: View, CharactersViewDelegate  {
     @StateObject var viewModel: VM
 
     @State var searchNameTextField = ""
     @State private var isSearchBarVisible = true
     @State private var searchTimer: Timer?
-    @State private var isFiltering:  Bool = false
     @State private var isFilterViewPresented = false
     
     var body: some View {
@@ -28,7 +27,7 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                                 self.searchTimer?.invalidate()
                                 let newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
                                     viewModel.searchByName(searchNameTextField)
-                                    isFiltering = !searchNameTextField.isEmpty
+                                    viewModel.isFiltering = !searchNameTextField.isEmpty
                                 }
                                 self.searchTimer = newTimer
                             }
@@ -49,7 +48,8 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                                 .foregroundColor(.primaryGreen)
                         }
                         .navigationDestination(isPresented: $isFilterViewPresented) {
-                            FiltersBuilder().build(characterView: self)
+                            FiltersBuilder().build(characterView: self, mainFilters: viewModel.mainFilters)
+                                .toolbar(.hidden,for: .tabBar)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -58,21 +58,40 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
                             HStack {
                                 ForEach(viewModel.mainFilters.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
                                     if key != Constants.QueryParams.page.rawValue && key != Constants.QueryParams.name.rawValue {
-                                        Text("\(String(describing: viewModel.mainFilters[key]!))")
+                                        FilterCellView(key: key, param: value, delegate: viewModel as? FilterCellDellegate )
                                     }
                                 }
                             }
                         }
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                     }
                 }
-                ForEach(!isFiltering ? viewModel.characters : viewModel.filteredCharacters) { character in
-                    
-                    CharacterView(character: character, viewModel: viewModel)
-                    .onAppear {
-                        if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
-                            viewModel.loadNewPage()
+                
+
+                ForEach(Array((!viewModel.isFiltering ? viewModel.characters : viewModel.filteredCharacters).enumerated()), id: \.element.id) { (index, character) in
+                    ZStack {
+                        
+                        if !viewModel.isFiltering {
+                            CharacterView(character: $viewModel.characters[index], viewModel: viewModel)
+                                .onAppear {
+                                    if character.id == viewModel.characters.last?.id && !viewModel.isLoading {
+                                        viewModel.loadNewPage()
+                                    }
+                                }
+                        } else {
+                            CharacterView(character: $viewModel.filteredCharacters[index], viewModel: viewModel)
+                                .onAppear {
+                                    if character.id == viewModel.filteredCharacters.last?.id && !viewModel.isLoading {
+                                        viewModel.loadNewPage()
+                                    }
+                                }
                         }
+                        
+                        NavigationLink(destination: CharacterDetailBuilder().build(character: character, delegate: viewModel as CharacterFavouriteDelegate), label: {})
+                            .opacity(0)
                     }
+                    
                 }
                 
             }
@@ -91,7 +110,12 @@ struct CharacterListView<VM: CharactersListViewModelProtocol>: View, CharactersV
     }
 
     func setMainFilters(mainFilters: [String:Any]) {
-        isFiltering = !mainFilters.isEmpty
+        viewModel.isFiltering =  mainFilters.containsAdditionalFilter(keys: [
+            Constants.QueryParams.gender.rawValue,
+            Constants.QueryParams.species.rawValue,
+            Constants.QueryParams.status.rawValue,
+            Constants.QueryParams.type.rawValue,
+        ])
         viewModel.updateFilters(newFilters: mainFilters)
     }
 }

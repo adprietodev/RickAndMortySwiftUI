@@ -9,4 +9,5 @@ import Foundation
 
 protocol EpisodesRepositoryProtocol {
     func getEpisodes(with filters: [String: Any]) async throws -> [Episode]
+    func getEpisodes(by ids: [Int]) async throws -> [Episode] 
 }
