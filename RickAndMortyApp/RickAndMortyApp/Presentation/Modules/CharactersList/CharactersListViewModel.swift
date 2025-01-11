@@ -88,6 +88,7 @@ class CharactersListViewModel: ObservableObject, CharacterFavouriteDelegate {
             mainFilters[Constants.QueryParams.page.rawValue] = currentPage
             mainFilters.removeValue(forKey: Constants.QueryParams.name.rawValue)
         } else {
+            mainFilters[Constants.QueryParams.page.rawValue] = "\(filteredPage)"
             mainFilters.updateValue(name, forKey: Constants.QueryParams.name.rawValue)
             setFilteredCharacters()
         }

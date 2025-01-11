@@ -43,13 +43,16 @@ class FiltersViewModel: ObservableObject {
     func setFilter(with query: String, param: Any) {
         guard let paramStr = param as? String else { return }
         let filteredParamStr = paramStr == "none" ? "" : paramStr
-        
-        if filteredParamStr.isEmpty {
-            mainFilters.removeValue(forKey: query)
-        } else {
-            mainFilters[query] = param
-        }
 
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if filteredParamStr.isEmpty {
+                mainFilters.removeValue(forKey: query)
+            } else {
+                mainFilters[query] = param
+            }
+        }
+        
         getCountTotalCharacters()
     }
 
